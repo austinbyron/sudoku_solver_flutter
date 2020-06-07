@@ -266,11 +266,11 @@ bool solveBoard() {
     //print(colNum);
     boxNum = getBoxNum(startingSpot);
     //print(boxNum);
-    
+    controllers[startingSpot].text = "$i";
     if (checkRow(rowNum) &&
         checkColumn(colNum) &&
         checkSubTable(boxNum)) {
-        controllers[startingSpot].text = "$i";
+        
         //print(checkRow(rowNum));
         //print(checkColumn(colNum));
         //print(checkSubTable(boxNum));
@@ -339,10 +339,10 @@ bool checkRow(int rowNumber) {
     
   }
 
-  //rowMap.forEach((key, value) {
+  rowMap.forEach((key, value) {
     //print("$key -> $value");
-    //if (value != null && value > 1) return false;
-  //});
+    if (value != null && value > 1) return false;
+  });
 
 
   for (int i = 0; i < 9; i++) {
@@ -375,9 +375,9 @@ bool checkColumn(int columnNumber) {
     
   }
 
-  //columnMap.forEach((key, value) {
-    //if (value != null && value > 1) return false;
-  //});
+  columnMap.forEach((key, value) {
+    if (value != null && value > 1) return false;
+  });
 
   for (int i = 0; i < 9; i++) {
     if (columnMap[controllers[colInd[columnNumber][i]].text] == null) {
@@ -401,9 +401,9 @@ bool checkSubTable(int subTableNumber) {
     
   }
 
-  //subTableMap.forEach((key, value) {
-    //if (value != null && value > 1) return false;
-  //});
+  subTableMap.forEach((key, value) {
+    if (value != null && value > 1) return false;
+  });
 
   for (int i = start; i < 9; i++) {
     if (subTableMap[controllers[i].text] == null) {

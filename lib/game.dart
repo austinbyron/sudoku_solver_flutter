@@ -187,7 +187,7 @@ class _GameInitialize extends State<GameInitialize> {
       int random = 0;
       int filledWith = 0;
       int count = 0;
-      while (count < 60) {
+      while (count < 42) {
         //print(count);
         random = rng.nextInt(80);
         filledWith = randomNum.nextInt(9);
@@ -215,7 +215,7 @@ class _GameInitialize extends State<GameInitialize> {
       int random = 0;
       int filledWith = 0;
       int count = 0;
-      while (count < 75) {
+      while (count < 33) {
         //print(count);
         random = rng.nextInt(80);
         filledWith = randomNum.nextInt(9);

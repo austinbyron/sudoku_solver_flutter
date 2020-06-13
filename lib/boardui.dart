@@ -208,13 +208,13 @@ class _Sudoku extends State<Sudoku> {
               resetBadTile();
               print(findFirstUnassignedLocation());
               for (int i = 0; i < 9; i++) {
-                if (checkRow(i) != true) {
+                //if (checkRow(i) != true) {
                   //badTile[checkRow(i)] = true;
-                }
+                //}
                 
-                print(checkRow(i));
-                print(checkColumn(i));
-                print(checkSubTable(i));
+                //print(checkRow(i));
+                //print(checkColumn(i));
+                //print(checkSubTable(i));
               }
             },
           ),
@@ -325,7 +325,7 @@ int findFirstUnassignedLocation() {
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++) {
       if (controllers[(i*9) + j].text == "" && !readOnly[(i*9) + j]) {
-        return rowInd[i][j];
+        return (i*9) + j;
       }
     }
   }

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:math';
 
 
 List<bool> badTile = new List();
@@ -206,9 +206,10 @@ class _Sudoku extends State<Sudoku> {
             ),
             onTap: () {
               resetBadTile();
-              print(findFirstUnassignedLocation());
-              print(checkRow(0));
-              print(checkColumn(0));
+              int firstUnAssigned = findFirstUnassignedLocation();
+              print(firstUnAssigned);
+              print(checkRow(firstUnAssigned));
+              print(checkColumn(firstUnAssigned));
               for (int i = 0; i < 9; i++) {
                 //if (checkRow(i) != true) {
                   //badTile[checkRow(i)] = true;
@@ -324,12 +325,13 @@ bool solveBoard() {
 }
 
 int findFirstUnassignedLocation() {
-  for (int i = 0; i < 9; i++) {
-    for (int j = 0; j < 9; j++) {
+  for (int i = 0; i < 81; i++) {
+    if (controllers[i].text == "" && !readOnly[i]) return i;
+    /*for (int j = 0; j < 9; j++) {
       if (controllers[(i*9) + j].text == "" && !readOnly[(i*9) + j]) {
         return (i*9) + j;
       }
-    }
+    }*/
   }
 
   return 81; //out of bounds if everything is filled
@@ -355,9 +357,10 @@ void resetBadTile() {
 }
 
 //check if row is valid under current conditions
-bool checkRow(int rowNumber) {
+bool checkRow(int index) {
 
   resetRowMap();
+  int rowNumber = (index ~/ 9);
   int lim = rowNumber *9;
   for (int i = lim; i < lim + 9; i++) {
     if (controllers[i].text != "") {
@@ -391,9 +394,10 @@ bool checkRow(int rowNumber) {
 */
 }
 
-bool checkColumn(int columnNumber) {
+bool checkColumn(int index) {
 
   resetColumnMap();
+  int columnNumber = index % 9;
   //print(columnNumber);
   for (int i = columnNumber; i < 81; i += 9) {
     //print(i);
@@ -426,6 +430,10 @@ bool checkColumn(int columnNumber) {
   return true;
   */
 }
+
+//row number = total index / 9 (automatically rounded down because int)
+//col number = total index % 9
+//box number = (row num / 3) * 3 + col num / 3
 
 bool checkSubTable(int subTableNumber) {
   int start = subTableNumber * 9;

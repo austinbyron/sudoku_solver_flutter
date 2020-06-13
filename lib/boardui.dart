@@ -73,7 +73,7 @@ class _Sudoku extends State<Sudoku> {
                   disabledBorder: InputBorder.none,
                 ),
               ),
-              //Text("${index}")
+              Text("${index}")
               ]
             ),
             
@@ -98,17 +98,11 @@ class _Sudoku extends State<Sudoku> {
             tableElement(context, start + 0),
             tableElement(context, start + 1),
             tableElement(context, start + 2),
-          ],
-        ),
-        TableRow(
-          children: [
+          
             tableElement(context, start + 3),
             tableElement(context, start + 4),
             tableElement(context, start + 5),
-          ],
-        ),
-        TableRow(
-          children: [
+         
             tableElement(context, start + 6),
             tableElement(context, start + 7),
             tableElement(context, start + 8),
@@ -126,7 +120,7 @@ class _Sudoku extends State<Sudoku> {
       appBar: AppBar(title: Text("Sudoku Solver")),
       body: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+          constraints: BoxConstraints(maxHeight: (MediaQuery.of(context).size.height)*2),
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -139,31 +133,60 @@ class _Sudoku extends State<Sudoku> {
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           TableRow(
+            //decoration: Decoration.,
             children: [
               subTable(context, 0),
               //Text("0"),
+            ],
+          ),
+          TableRow(
+            children: [
               subTable(context, 1),
               //Text("1"),
+            ]
+          ),
+          TableRow(
+            children: [
               subTable(context, 2),
               //Text("2"),
             ]
           ),
           TableRow(
             children: [
+          
               subTable(context, 3),
               //Text("3"),
+            ]
+          ),
+          TableRow(
+
+            children: [
               subTable(context, 4),
               //Text("4"),
+            ]
+          ),
+          TableRow(
+            children: [
+          
               subTable(context, 5),
               //Text("5"), 
-            ],
+            ]
           ),
           TableRow(
             children: [
               subTable(context, 6),
               //Text("6"),
+            ]
+          ),
+          TableRow(
+
+            children: [
               subTable(context, 7),
               //Text("7"),
+            ]
+          ),
+          TableRow(
+            children: [
               subTable(context, 8),
               //Text("8"),
             ],
@@ -183,6 +206,7 @@ class _Sudoku extends State<Sudoku> {
             ),
             onTap: () {
               resetBadTile();
+              print(findFirstUnassignedLocation());
               for (int i = 0; i < 9; i++) {
                 if (checkRow(i) != true) {
                   //badTile[checkRow(i)] = true;
@@ -300,7 +324,7 @@ bool solveBoard() {
 int findFirstUnassignedLocation() {
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++) {
-      if (controllers[rowInd[i][j]].text == "" && !readOnly[rowInd[i][j]]) {
+      if (controllers[(i*9) + j].text == "" && !readOnly[(i*9) + j]) {
         return rowInd[i][j];
       }
     }
@@ -339,14 +363,14 @@ bool checkRow(int rowNumber) {
     
   }
 
-  rowMap.forEach((key, value) {
+  //rowMap.forEach((key, value) {
     //print("$key -> $value");
-    if (value != null && value > 1) return false;
-  });
+    //if (value != null && value > 1) return false;
+  //});
 
 
   for (int i = 0; i < 9; i++) {
-    if (rowMap[controllers[rowInd[rowNumber][i]].text]== null) {
+    if (rowMap[controllers[i].text]== null) {
       //do nothing
     }
     else if (rowMap[controllers[rowInd[rowNumber][i]].text] > 1) {

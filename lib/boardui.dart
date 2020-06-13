@@ -207,6 +207,8 @@ class _Sudoku extends State<Sudoku> {
             onTap: () {
               resetBadTile();
               print(findFirstUnassignedLocation());
+              print(checkRow(0));
+              print(checkColumn(0));
               for (int i = 0; i < 9; i++) {
                 //if (checkRow(i) != true) {
                   //badTile[checkRow(i)] = true;
@@ -352,28 +354,30 @@ void resetBadTile() {
   }
 }
 
+//check if row is valid under current conditions
 bool checkRow(int rowNumber) {
 
   resetRowMap();
-
-  for (int i = 0; i < 9; i++) {
-    if (controllers[rowInd[rowNumber][i]].text != "") {
-      rowMap[(controllers[rowInd[rowNumber][i]].text)]++;
+  int lim = rowNumber *9;
+  for (int i = lim; i < lim + 9; i++) {
+    if (controllers[i].text != "") {
+      if (rowMap[controllers[i].text] == 1) return false;
+      rowMap[(controllers[i].text)]++;
     }
     
   }
-
+  return true;
   //rowMap.forEach((key, value) {
     //print("$key -> $value");
     //if (value != null && value > 1) return false;
   //});
 
-
-  for (int i = 0; i < 9; i++) {
+/*
+  for (int i = lim; i < lim + 9; i++) {
     if (rowMap[controllers[i].text]== null) {
       //do nothing
     }
-    else if (rowMap[controllers[rowInd[rowNumber][i]].text] > 1) {
+    else if (rowMap[controllers[i].text] > 1) {
       //print(rowInd[rowNumber][i]);
       //rowMap.forEach((key, value) {
         //print("$key -> $value");
@@ -384,33 +388,43 @@ bool checkRow(int rowNumber) {
   }
 
   return true;
-
+*/
 }
 
 bool checkColumn(int columnNumber) {
 
   resetColumnMap();
-
-  for (int i = 0; i < 9; i++) {
-    if (controllers[colInd[columnNumber][i]].text != "") {
-      columnMap[controllers[colInd[columnNumber][i]].text]++;
+  //print(columnNumber);
+  for (int i = columnNumber; i < 81; i += 9) {
+    //print(i);
+    if (controllers[i].text != "") {
+      //print(columnMap[controllers[i]]);
+      if (columnMap[controllers[i].text] == 1) return false;
+      columnMap[controllers[i].text]++;
+      //print(columnMap[controllers[i]]);
     }
     
     
   }
-
+  return true;
+/*
   columnMap.forEach((key, value) {
-    if (value != null && value > 1) return false;
+    print(key);
+    print(value);
+    if (value > 1) return false;
   });
-
-  for (int i = 0; i < 9; i++) {
-    if (columnMap[controllers[colInd[columnNumber][i]].text] == null) {
+  return true;
+  */
+/*
+  for (int i = columnNumber; i < 81; i+= 9) {
+    if (columnMap[controllers[i].text] == null) {
       //do nothing
     }
-    else if (columnMap[controllers[colInd[columnNumber][i]].text] > 1) return false;
+    else if (columnMap[controllers[i].text] > 1) return false;
     //print(controllers[colInd[columnNumber][i]].text);
   }
   return true;
+  */
 }
 
 bool checkSubTable(int subTableNumber) {

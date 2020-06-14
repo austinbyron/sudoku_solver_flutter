@@ -14,6 +14,7 @@ List<bool> readOnly = new List();
     new GameData(difficulty: "Easy", selected: false),
     new GameData(difficulty: "Medium", selected: false),
     new GameData(difficulty: "Hard", selected: false),
+    //new GameData(difficulty: "Expert", selected: false),
     new GameData(difficulty: "Sandbox", selected: false),
 
   ];
@@ -60,13 +61,13 @@ class _GameInitialize extends State<GameInitialize> {
       body: Center(
         child: Column(
           children: [
-            Row(
-              children: [
-                SizedBox(width: 10, height: 10),
-                Expanded(child: Text("Easy")),
-                IconButton(
-                  icon: gameDataList[0].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
-                  onPressed: () {
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              child: Material(
+                child: InkWell(
+                  splashColor: Colors.blueAccent,
+                  onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 0) {
                         setState(() {
@@ -80,17 +81,28 @@ class _GameInitialize extends State<GameInitialize> {
                       }
                     }
                   },
-                )
-              ],
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10, height: 10),
+                      Expanded(child: Text("Easy")),
+                      Icon(
+                        gameDataList[0].selected ? (Icons.check) : (Icons.check_box_outline_blank),
+                  
+                      ),
+                      SizedBox(height: 10, width: 10),
+                    ],
+                  ),
+                ),
+              ),
             ),
             //Spacer(flex: 3),
-            Row(
-              children: [
-                SizedBox(width: 10, height: 10),
-                Expanded(child: Text("Medium")),
-                IconButton(
-                  icon: gameDataList[1].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
-                  onPressed: () {
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              child: Material(
+                child: InkWell(
+                  splashColor: Colors.blueAccent,
+                  onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 1) {
                         setState(() {
@@ -104,17 +116,27 @@ class _GameInitialize extends State<GameInitialize> {
                       }
                     }
                   },
-                )
-              ],
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10, height: 10),
+                      Expanded(child: Text("Medium")),
+                      Icon(
+                        gameDataList[1].selected ? (Icons.check) : (Icons.check_box_outline_blank),
+                  
+                      ),
+                      SizedBox(height: 10, width: 10),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            //Spacer(flex: 3),
-            Row(
-              children: [
-                SizedBox(width: 10, height: 10),
-                Expanded(child: Text("Hard")),
-                IconButton(
-                  icon: gameDataList[2].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
-                  onPressed: () {
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              child: Material(
+                child: InkWell(
+                  splashColor: Colors.blueAccent,
+                  onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 2) {
                         setState(() {
@@ -128,17 +150,29 @@ class _GameInitialize extends State<GameInitialize> {
                       }
                     }
                   },
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10, height: 10),
+                      Expanded(child: Text("Hard")),
+                      Icon(
+                        gameDataList[2].selected ? (Icons.check) : (Icons.check_box_outline_blank),
+                  
+                      ),
+                      SizedBox(height: 10, width: 10),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
             //Spacer(flex: 3),
-            Row(
-              children: [
-                SizedBox(width: 10, height: 10),
-                Expanded(child: Text("Sandbox")),
-                IconButton(
-                  icon: gameDataList[3].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
-                  onPressed: () {
+            /*
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              child: Material(
+                child: InkWell(
+                  splashColor: Colors.blueAccent,
+                  onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 3) {
                         setState(() {
@@ -152,9 +186,57 @@ class _GameInitialize extends State<GameInitialize> {
                       }
                     }
                   },
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10, height: 10),
+                      Expanded(child: Text("Expert")),
+                      Icon(
+                        gameDataList[3].selected ? (Icons.check) : (Icons.check_box_outline_blank),
+                  
+                      ),
+                      SizedBox(height: 10, width: 10),
+                    ],
+                  ),
                 ),
-              ],
+              ),
+            ),*/
+            //Spacer(flex: 3),
+            
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 40,
+              child: Material(
+                child: InkWell(
+                  splashColor: Colors.blueAccent,
+                  onTap: () {
+                    for (int i = 0; i < gameDataList.length; i++) {
+                      if (i == 3) {
+                        setState(() {
+                          gameDataList[i].selected = !gameDataList[i].selected;
+                        });
+                      }
+                      else {
+                        setState(() {
+                          gameDataList[i].selected = false;
+                        });
+                      }
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      SizedBox(width: 10, height: 10),
+                      Expanded(child: Text("Sandbox")),
+                      Icon(
+                        gameDataList[3].selected ? (Icons.check) : (Icons.check_box_outline_blank),
+                  
+                      ),
+                      SizedBox(height: 10, width: 10),
+                    ],
+                  ),
+                ),
+              ),
             ),
+            
           ]
         ),
       ),
@@ -260,6 +342,30 @@ class _GameInitialize extends State<GameInitialize> {
       
       //print(count);
     }
+    /*
+    else if (gameDataList[index].difficulty == "Expert") {
+      PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 4);
+      Puzzle puzzle = new Puzzle(puzzleOptions);
+      puzzle.generate().then((value) {
+        printGrid(puzzle.board());
+        List<List<Cell>> myboard = puzzle.board().matrix();
+        for (int i = 0; i < 9; i++) {
+          for (int j = 0; j < 9; j++) {
+            //print(myboard[i][j].getValue());
+            if (myboard[i][j].getValue() != 0) {
+              controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
+              readOnly[i * 9 + j] = true;
+            }
+          }
+        }
+        printGrid(puzzle.solvedBoard());
+      });
+      
+      print(puzzle);
+      
+      
+      //print(count);
+    }*/
     else {
       for (int i = 0; i < 81; i++) {
         controllers[i].text = "";

@@ -115,9 +115,14 @@ class _Sudoku extends State<Sudoku> {
 
   @override
   Widget build(BuildContext context) {
-
+    String title = "Sandbox Mode";
+    for (int i = 0; i < gameDataList.length; i++) {
+      if (gameDataList[i].selected == true) {
+        title = "${gameDataList[i].difficulty} Mode";
+      }
+    }
     return Scaffold(
-      appBar: AppBar(title: Text("Sudoku Solver")),
+      appBar: AppBar(title: Text("$title")),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: (MediaQuery.of(context).size.height)*2),
@@ -304,6 +309,33 @@ class _Sudoku extends State<Sudoku> {
           ),
         ),
       ),
+      SizedBox(width: 10, height: 10),
+      Container(
+        height: 40.0,
+        width: MediaQuery.of(context).size.width,
+        child: Material(
+          child: InkWell(
+            splashColor: Colors.lightBlue,
+            child: Center(
+              child: Text("Solve the board?"),
+            ),
+            onTap: () async {
+              
+              setState(() {
+                _solve = true;
+              });
+              
+              bool tests = solveBoard();
+              print(tests);
+              
+              setState(() {
+                _solve = false;
+              });
+            },
+          ),
+        ),
+      ),
+      /*
       Padding(
         padding: EdgeInsets.all(8.0),
         child: Row(
@@ -331,6 +363,8 @@ class _Sudoku extends State<Sudoku> {
           ]
         ),
       ),
+      */
+      /*
       Padding(
         padding: EdgeInsets.all(8.0),
         child: _solve ? CircularProgressIndicator() : Row(
@@ -356,6 +390,7 @@ class _Sudoku extends State<Sudoku> {
           ]
         ),
       )
+      */
           ]
         ),
       )

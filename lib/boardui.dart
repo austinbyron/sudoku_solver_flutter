@@ -30,7 +30,7 @@ class _Sudoku extends State<Sudoku> {
     return Container(
       color: badTile[index] ? Colors.blueAccent : Colors.white,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(4.0, 8.0, 0.0, 8.0),
+        padding: EdgeInsets.fromLTRB(16.0, 8.0, 0.0, 8.0),
         
         child: GestureDetector(
           onTap: () {
@@ -73,7 +73,7 @@ class _Sudoku extends State<Sudoku> {
                   disabledBorder: InputBorder.none,
                 ),
               ),
-              Text("${index}")
+              //Text("${index}")
               ]
             ),
             
@@ -213,7 +213,28 @@ class _Sudoku extends State<Sudoku> {
                 print(checkColumn(firstUnAssigned));
                 print(checkSubTable(firstUnAssigned));
               }
-              else print("done!");
+              else {
+                bool stillGood = true;
+                int i = 0;
+                for (i = 0; i < 81; i++) {
+                  if (!checkRow(i)) {
+                    stillGood = false;
+                    print(rowMap);
+                    break;
+                  }
+                  else if (!checkColumn(i)) {
+                    stillGood = false;
+                    print(columnMap);
+                    break;
+                  }
+                  else if (!checkSubTable(i)) {
+                    stillGood = false;
+                    print(subTableMap);
+                    break;
+                  }
+                }
+                print(stillGood ? "done!" : "error at index $i");
+              }
             },
           ),
         ),
@@ -283,8 +304,7 @@ class _Sudoku extends State<Sudoku> {
 bool solveBoard() {
   int startingSpot = findFirstUnassignedLocation();
   if (startingSpot == 81) return true; //startingSpot = findFirstWritableAssigned();
-  //print(startingSpot);
-  int rowNum, colNum, boxNum;
+  
   for (int i = 1; i <= 9; i++) {
     
     
@@ -299,7 +319,9 @@ bool solveBoard() {
         //print(checkSubTable(boxNum));
         //print(checkRow(rowNum) && checkColumn(colNum) && checkSubTable(boxNum));
 
-        return solveBoard();
+        if (solveBoard()) {
+          return true;
+        }
 
         
         
@@ -307,12 +329,7 @@ bool solveBoard() {
     }
      
     controllers[startingSpot].text = "";
-    /*
-    if (!isAlreadyInRow(startingSpot, i) && 
-        !isAlreadyInCol(startingSpot, i) &&
-        !isAlreadyInBox(startingSpot, i)) {
-      solveBoard();
-    }*/
+    
     
   }
   //controllers[startingSpot].text = "";
@@ -335,16 +352,7 @@ int findFirstUnassignedLocation() {
 
 //when the board is full we find the first
 //location to overwrite
-int findFirstWritableAssigned() {
-  for (int i = 0; i < 9; i++) {
-    for (int j = 0; j < 9; j++) {
-      if (!readOnly[rowInd[i][j]]) return rowInd[i][j];
-    }
-  }
 
-  //shouldn't get here but return 81 out of bounds just in case
-  return 81;
-}
 
 void resetBadTile() {
   for (int i = 0; i < 81; i++) {
@@ -360,34 +368,16 @@ bool checkRow(int index) {
   int lim = rowNumber *9;
   for (int i = lim; i < lim + 9; i++) {
     if (controllers[i].text != "") {
-      if (rowMap[controllers[i].text] == 1) return false;
+      if (rowMap[controllers[i].text] == 1) {
+        rowMap[(controllers[i].text)]++;
+        return false;
+      }
       rowMap[(controllers[i].text)]++;
     }
     
   }
   return true;
-  //rowMap.forEach((key, value) {
-    //print("$key -> $value");
-    //if (value != null && value > 1) return false;
-  //});
 
-/*
-  for (int i = lim; i < lim + 9; i++) {
-    if (rowMap[controllers[i].text]== null) {
-      //do nothing
-    }
-    else if (rowMap[controllers[i].text] > 1) {
-      //print(rowInd[rowNumber][i]);
-      //rowMap.forEach((key, value) {
-        //print("$key -> $value");
-      //});
-      return false;
-    }
-    //print(controllers[rowInd[rowNumber][i]].text);
-  }
-
-  return true;
-*/
 }
 
 bool checkColumn(int index) {
@@ -399,7 +389,10 @@ bool checkColumn(int index) {
     //print(i);
     if (controllers[i].text != "") {
       //print(columnMap[controllers[i]]);
-      if (columnMap[controllers[i].text] == 1) return false;
+      if (columnMap[controllers[i].text] == 1) {
+        columnMap[controllers[i].text]++;
+        return false;
+      }
       columnMap[controllers[i].text]++;
       //print(columnMap[controllers[i]]);
     }
@@ -407,24 +400,7 @@ bool checkColumn(int index) {
     
   }
   return true;
-/*
-  columnMap.forEach((key, value) {
-    print(key);
-    print(value);
-    if (value > 1) return false;
-  });
-  return true;
-  */
-/*
-  for (int i = columnNumber; i < 81; i+= 9) {
-    if (columnMap[controllers[i].text] == null) {
-      //do nothing
-    }
-    else if (columnMap[controllers[i].text] > 1) return false;
-    //print(controllers[colInd[columnNumber][i]].text);
-  }
-  return true;
-  */
+
 }
 
 //row number = total index / 9 (automatically rounded down because int)
@@ -432,8 +408,6 @@ bool checkColumn(int index) {
 //box number = (row num / 3) * 3 + col num / 3
 
 bool checkSubTable(int index) {
-  //int start = subTableNumber * 9;
-  //print("Index = $index");
   
   int rowNumber = index ~/ 9;
   //print("rowNumber = $rowNumber");
@@ -445,44 +419,21 @@ bool checkSubTable(int index) {
 
   int startRow = (rowNumber ~/ 3) * 3;
   int startCol = (colNumber ~/ 3) * 3;
-  //print("boxNum = $boxNum");
-  //print("startRow = $startRow");
-  //print("startCol = $startCol");
+  
 
   for (int i = startRow; i < startRow + 3; i++) {
     for (int j = startCol; j < startCol + 3; j++) {
-      //print(i*9 + j);
+      
       if (subTableMap[controllers[i * 9 + j].text] == 1) {
+        subTableMap[controllers[i * 9 + j].text]++;
         return false;
       }
       else if (subTableMap[controllers[i * 9 + j].text] != null)
-      subTableMap[controllers[i * 9 + j].text]++;
+        subTableMap[controllers[i * 9 + j].text]++;
     }
     
     
   }
-/*
-  for (int i = 1; i <= 9; i++) {
-    print(subTableMap["$i"]);
-    if (subTableMap["$i"] == null) {
-      //do nothing
-    }
-    else if (subTableMap["$i"] > 1) return false;
-    
-  }
-*/
-  //should be able to iterate through all values in the subtable map
-/*
-  for (int i = startRow; i < startRow + 3; i++) {
-    for (int j = startCol; j < startCol + 3; j++) {
-      if (subTableMap[controllers[i*9 + j].text] == null) {
-      //do nothing
-    }
-      else if (subTableMap[controllers[i * 9 + j].text] > 1) return false;
-    }
-    
-  }
-  */
   return true;
 }
 
@@ -543,26 +494,3 @@ Map<String, int> rowMap = {
   '9': 0
 };
 
-List<List<int>> rowInd = [
-  [0,1,2,9,10,11,18,19,20],
-  [3,4,5,12,13,14,21,22,23],
-  [6,7,8,15,16,17,24,25,26],
-  [27,28,29,36,37,38,45,46,47],
-  [30,31,32,39,40,41,48,49,50],
-  [33,34,35,42,43,44,51,52,53],
-  [54,55,56,63,64,65,72,73,74],
-  [57,58,59,66,67,68,75,76,77],
-  [60,61,62,69,70,71,78,79,80]
-];
-
-List<List<int>> colInd = [
-  [0,3,6,27,30,33,54,57,60],
-  [1,4,7,28,31,34,55,58,61],
-  [2,5,8,29,32,35,56,59,62],
-  [9,12,15,36,39,42,63,66,69],
-  [10,13,16,37,40,43,64,67,70],
-  [11,14,17,38,41,44,65,68,71],
-  [18,21,24,45,48,51,72,75,78],
-  [19,22,25,46,49,52,73,76,79],
-  [20,23,26,47,50,53,74,77,80]
-];

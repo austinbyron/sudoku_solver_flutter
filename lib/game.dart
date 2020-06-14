@@ -4,7 +4,7 @@ import 'boardui.dart';
 import 'dart:core';
 import 'main.dart';
 import 'dart:math';
-
+import 'package:sudoku_api/sudoku_api.dart';
 
 List<TextEditingController> controllers = new List();
 List<FocusNode> nodes = new List();
@@ -62,6 +62,7 @@ class _GameInitialize extends State<GameInitialize> {
           children: [
             Row(
               children: [
+                SizedBox(width: 10, height: 10),
                 Expanded(child: Text("Easy")),
                 IconButton(
                   icon: gameDataList[0].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
@@ -85,6 +86,7 @@ class _GameInitialize extends State<GameInitialize> {
             //Spacer(flex: 3),
             Row(
               children: [
+                SizedBox(width: 10, height: 10),
                 Expanded(child: Text("Medium")),
                 IconButton(
                   icon: gameDataList[1].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
@@ -108,6 +110,7 @@ class _GameInitialize extends State<GameInitialize> {
             //Spacer(flex: 3),
             Row(
               children: [
+                SizedBox(width: 10, height: 10),
                 Expanded(child: Text("Hard")),
                 IconButton(
                   icon: gameDataList[2].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
@@ -131,6 +134,7 @@ class _GameInitialize extends State<GameInitialize> {
             //Spacer(flex: 3),
             Row(
               children: [
+                SizedBox(width: 10, height: 10),
                 Expanded(child: Text("Sandbox")),
                 IconButton(
                   icon: gameDataList[3].selected ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
@@ -156,11 +160,11 @@ class _GameInitialize extends State<GameInitialize> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.done),
-        onPressed: () {
+        onPressed: () async {
           for (int i = 0; i < gameDataList.length; i++) {
             if (gameDataList[i].selected == true) {
 
-              initGame(i);
+              await initGame(i);
 
               break;
             }
@@ -179,7 +183,7 @@ class _GameInitialize extends State<GameInitialize> {
 
   }
 
-  void initGame(int index) {
+  Future<void> initGame(int index) async {
 
     if (gameDataList[index].difficulty == "Easy") {
       var rng = new Random();
@@ -187,78 +191,73 @@ class _GameInitialize extends State<GameInitialize> {
       int random = 0;
       int filledWith = 0;
       int count = 0;
-      while (count < 42) {
-        //print(count);
-        random = rng.nextInt(80);
-        filledWith = randomNum.nextInt(9);
-        if (filledWith <= 0) filledWith = 1;
-        if (!isAlreadyInBox(random, filledWith) && 
-            !isAlreadyInCol(random, filledWith) && 
-            !isAlreadyInRow(random, filledWith) &&
-            !readOnly[random]) {
 
-          controllers[random].text = filledWith.toString();
-          readOnly[random] = true;
-          //print("$random assigned to $filledWith");
-          count++;
-          
+      PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 1);
+      Puzzle puzzle = new Puzzle(puzzleOptions);
+      puzzle.generate().then((value) {
+        printGrid(puzzle.board());
+        List<List<Cell>> myboard = puzzle.board().matrix();
+        for (int i = 0; i < 9; i++) {
+          for (int j = 0; j < 9; j++) {
+            //print(myboard[i][j].getValue());
+            if (myboard[i][j].getValue() != 0) {
+              controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
+              readOnly[i * 9 + j] = true;
+            }
+          }
         }
-        
-      }
+        printGrid(puzzle.solvedBoard());
+      });
+      
+      print(puzzle);
+      
       print(count);
     }
 
 
     else if (gameDataList[index].difficulty == "Medium") {
-      var rng = new Random();
-      var randomNum = new Random();
-      int random = 0;
-      int filledWith = 0;
-      int count = 0;
-      while (count < 33) {
-        //print(count);
-        random = rng.nextInt(80);
-        filledWith = randomNum.nextInt(9);
-        if (filledWith <= 0) filledWith = 1;
-        if (!isAlreadyInBox(random, filledWith) && 
-            !isAlreadyInCol(random, filledWith) && 
-            !isAlreadyInRow(random, filledWith) &&
-            !readOnly[random]) {
-
-          controllers[random].text = filledWith.toString();
-          readOnly[random] = true;
-          //print("$random assigned to $filledWith");
-          count++;
-          
+      PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 2);
+      Puzzle puzzle = new Puzzle(puzzleOptions);
+      puzzle.generate().then((value) {
+        printGrid(puzzle.board());
+        List<List<Cell>> myboard = puzzle.board().matrix();
+        for (int i = 0; i < 9; i++) {
+          for (int j = 0; j < 9; j++) {
+            //print(myboard[i][j].getValue());
+            if (myboard[i][j].getValue() != 0) {
+              controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
+              readOnly[i * 9 + j] = true;
+            }
+          }
         }
-        
-      }
-      //print(count);
+        printGrid(puzzle.solvedBoard());
+      });
+      
+      print(puzzle);
+      
+      
     }
     else if (gameDataList[index].difficulty == "Hard") {
-      var rng = new Random();
-      var randomNum = new Random();
-      int random = 0;
-      int filledWith = 0;
-      int count = 0;
-      while (count < 25) {
-        //print(count);
-        random = rng.nextInt(80);
-        filledWith = randomNum.nextInt(9);
-        if (filledWith <= 0) filledWith = 1;
-        if (!isAlreadyInBox(random, filledWith) && 
-            !isAlreadyInCol(random, filledWith) && 
-            !isAlreadyInRow(random, filledWith) &&
-            !readOnly[random]) {
-
-          controllers[random].text = filledWith.toString();
-          readOnly[random] = true;
-          //sprint("$random assigned to $filledWith");
-          count++;
-          
+      PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 3);
+      Puzzle puzzle = new Puzzle(puzzleOptions);
+      puzzle.generate().then((value) {
+        printGrid(puzzle.board());
+        List<List<Cell>> myboard = puzzle.board().matrix();
+        for (int i = 0; i < 9; i++) {
+          for (int j = 0; j < 9; j++) {
+            //print(myboard[i][j].getValue());
+            if (myboard[i][j].getValue() != 0) {
+              controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
+              readOnly[i * 9 + j] = true;
+            }
+          }
         }
-        
-      }
+        printGrid(puzzle.solvedBoard());
+      });
+      
+      print(puzzle);
+      
+      
       //print(count);
     }
     else {
@@ -281,21 +280,9 @@ class GameData {
   }
 }
 
-bool isAlreadyInRow(int index, int number) {
-  int rowNum = getRowNum(index);
-  for (int i = 0; i < 9; i++) {
-    if (number.toString() == controllers[rowInd[rowNum][i]].text) return true;
-  }
-  return false;
-}
 
-bool isAlreadyInCol(int index, int number) {
-  int colNum = getColNum(index);
-  for (int i = 0; i < 9; i++) {
-    if (number.toString() == controllers[colInd[colNum][i]].text) return true;
-  }
-  return false;
-}
+
+
 
 bool isAlreadyInBox(int index, int number) {
   int boxNum = getBoxNum(index);
@@ -309,27 +296,8 @@ bool isAlreadyInBox(int index, int number) {
 
 }
 
-int getRowNum(int index) {
-  for (int i = 0; i < 9; i++) {
-    for (int j = 0; j < 9; j++) {
-      if (index == rowInd[i][j]) return i;
-    }
-  }
 
-  //else out of bounds
-  return 0;
-}
 
-int getColNum(int index) {
-  for (int i = 0; i < 9; i++) {
-    for (int j = 0; j < 9; j++) {
-      if (index == colInd[i][j]) return i;
-    }
-  }
-
-  //else out of bounds
-  return 0;
-}
 
 int getBoxNum(int index) {
   return (index / 9).floor();

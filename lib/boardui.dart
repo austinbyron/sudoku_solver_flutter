@@ -204,7 +204,7 @@ class _Sudoku extends State<Sudoku> {
             child: Center(
               child: Text("Check the board?"),
             ),
-            onTap: () {
+            onTap: () async {
               resetBadTile();
               int firstUnAssigned = findFirstUnassignedLocation();
               if (firstUnAssigned < 81) {
@@ -212,6 +212,27 @@ class _Sudoku extends State<Sudoku> {
                 print(checkRow(firstUnAssigned));
                 print(checkColumn(firstUnAssigned));
                 print(checkSubTable(firstUnAssigned));
+                await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "There are still unfinished tiles!",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              );
               }
               else {
                 bool stillGood = true;
@@ -233,6 +254,50 @@ class _Sudoku extends State<Sudoku> {
                     break;
                   }
                 }
+                stillGood ? 
+                await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "You're all done, congrats!",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.popUntil(context, (route) => route.isFirst);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              )
+                :
+                await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "Found an error :/",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              );
                 print(stillGood ? "done!" : "error at index $i");
               }
             },

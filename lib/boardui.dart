@@ -207,11 +207,13 @@ class _Sudoku extends State<Sudoku> {
             onTap: () {
               resetBadTile();
               int firstUnAssigned = findFirstUnassignedLocation();
-              print(firstUnAssigned);
-              print(checkRow(firstUnAssigned));
-              print(checkColumn(firstUnAssigned));
-              print(checkSubTable(firstUnAssigned));
-              
+              if (firstUnAssigned < 81) {
+                print(firstUnAssigned);
+                print(checkRow(firstUnAssigned));
+                print(checkColumn(firstUnAssigned));
+                print(checkSubTable(firstUnAssigned));
+              }
+              else print("done!");
             },
           ),
         ),
@@ -245,17 +247,22 @@ class _Sudoku extends State<Sudoku> {
       ),
       Padding(
         padding: EdgeInsets.all(8.0),
-        child: Row(
+        child: _solve ? CircularProgressIndicator() : Row(
           children: [Flexible(fit: FlexFit.loose, child: Text("Solve the board?")),
           Spacer(),
           IconButton(
             icon: _solve ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
             onPressed: () {
               setState(() {
-                _solve = !_solve;
+                _solve = true;
               });
               
-              while (!solveBoard());
+              bool tests = solveBoard();
+              print(tests);
+              
+              setState(() {
+                _solve = false;
+              });
               
               
             },
@@ -280,16 +287,12 @@ bool solveBoard() {
   int rowNum, colNum, boxNum;
   for (int i = 1; i <= 9; i++) {
     
-    rowNum = getRowNum(startingSpot);
-    //print(rowNum);
-    colNum = getColNum(startingSpot);
-    //print(colNum);
-    boxNum = getBoxNum(startingSpot);
+    
     //print(boxNum);
     controllers[startingSpot].text = "$i";
-    if (checkRow(rowNum) &&
-        checkColumn(colNum) &&
-        checkSubTable(boxNum)) {
+    if (checkRow(startingSpot) &&
+        checkColumn(startingSpot) &&
+        checkSubTable(startingSpot)) {
         
         //print(checkRow(rowNum));
         //print(checkColumn(colNum));
@@ -431,7 +434,7 @@ bool checkColumn(int index) {
 bool checkSubTable(int index) {
   //int start = subTableNumber * 9;
   //print("Index = $index");
-
+  
   int rowNumber = index ~/ 9;
   //print("rowNumber = $rowNumber");
   int colNumber = index % 9;
@@ -452,6 +455,7 @@ bool checkSubTable(int index) {
       if (subTableMap[controllers[i * 9 + j].text] == 1) {
         return false;
       }
+      else if (subTableMap[controllers[i * 9 + j].text] != null)
       subTableMap[controllers[i * 9 + j].text]++;
     }
     

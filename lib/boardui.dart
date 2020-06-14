@@ -210,15 +210,8 @@ class _Sudoku extends State<Sudoku> {
               print(firstUnAssigned);
               print(checkRow(firstUnAssigned));
               print(checkColumn(firstUnAssigned));
-              for (int i = 0; i < 9; i++) {
-                //if (checkRow(i) != true) {
-                  //badTile[checkRow(i)] = true;
-                //}
-                
-                //print(checkRow(i));
-                //print(checkColumn(i));
-                //print(checkSubTable(i));
-              }
+              print(checkSubTable(firstUnAssigned));
+              
             },
           ),
         ),
@@ -435,29 +428,57 @@ bool checkColumn(int index) {
 //col number = total index % 9
 //box number = (row num / 3) * 3 + col num / 3
 
-bool checkSubTable(int subTableNumber) {
-  int start = subTableNumber * 9;
+bool checkSubTable(int index) {
+  //int start = subTableNumber * 9;
+  //print("Index = $index");
 
+  int rowNumber = index ~/ 9;
+  //print("rowNumber = $rowNumber");
+  int colNumber = index % 9;
+  //print("colNumber = $colNumber");
+
+  int boxNum = (rowNumber ~/ 3) * 3 + (colNumber ~/ 3);
   resetSubTableMap();
 
-  for (int i = 0; i < 9; i++) {
-    if (controllers[start + i].text != "") {
-      subTableMap[controllers[start + i].text]++;
+  int startRow = (rowNumber ~/ 3) * 3;
+  int startCol = (colNumber ~/ 3) * 3;
+  //print("boxNum = $boxNum");
+  //print("startRow = $startRow");
+  //print("startCol = $startCol");
+
+  for (int i = startRow; i < startRow + 3; i++) {
+    for (int j = startCol; j < startCol + 3; j++) {
+      //print(i*9 + j);
+      if (subTableMap[controllers[i * 9 + j].text] == 1) {
+        return false;
+      }
+      subTableMap[controllers[i * 9 + j].text]++;
+    }
+    
+    
+  }
+/*
+  for (int i = 1; i <= 9; i++) {
+    print(subTableMap["$i"]);
+    if (subTableMap["$i"] == null) {
+      //do nothing
+    }
+    else if (subTableMap["$i"] > 1) return false;
+    
+  }
+*/
+  //should be able to iterate through all values in the subtable map
+/*
+  for (int i = startRow; i < startRow + 3; i++) {
+    for (int j = startCol; j < startCol + 3; j++) {
+      if (subTableMap[controllers[i*9 + j].text] == null) {
+      //do nothing
+    }
+      else if (subTableMap[controllers[i * 9 + j].text] > 1) return false;
     }
     
   }
-
-  subTableMap.forEach((key, value) {
-    if (value != null && value > 1) return false;
-  });
-
-  for (int i = start; i < 9; i++) {
-    if (subTableMap[controllers[i].text] == null) {
-      //do nothing
-    }
-    else if (subTableMap[controllers[i].text] > 1) return false;
-  }
-  
+  */
   return true;
 }
 

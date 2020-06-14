@@ -301,7 +301,7 @@ class _GameInitialize extends State<GameInitialize> {
       PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 2);
       Puzzle puzzle = new Puzzle(puzzleOptions);
       puzzle.generate().then((value) {
-        printGrid(puzzle.board());
+        //printGrid(puzzle.board());
         List<List<Cell>> myboard = puzzle.board().matrix();
         for (int i = 0; i < 9; i++) {
           for (int j = 0; j < 9; j++) {
@@ -312,10 +312,10 @@ class _GameInitialize extends State<GameInitialize> {
             }
           }
         }
-        printGrid(puzzle.solvedBoard());
+        //printGrid(puzzle.solvedBoard());
       });
       
-      print(puzzle);
+      //print(puzzle);
       
       
     }
@@ -323,7 +323,7 @@ class _GameInitialize extends State<GameInitialize> {
       PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 3);
       Puzzle puzzle = new Puzzle(puzzleOptions);
       puzzle.generate().then((value) {
-        printGrid(puzzle.board());
+        //printGrid(puzzle.board());
         List<List<Cell>> myboard = puzzle.board().matrix();
         for (int i = 0; i < 9; i++) {
           for (int j = 0; j < 9; j++) {
@@ -334,10 +334,10 @@ class _GameInitialize extends State<GameInitialize> {
             }
           }
         }
-        printGrid(puzzle.solvedBoard());
+        //printGrid(puzzle.solvedBoard());
       });
       
-      print(puzzle);
+      //print(puzzle);
       
       
       //print(count);

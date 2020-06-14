@@ -84,7 +84,8 @@ class _Sudoku extends State<Sudoku> {
   }
 
   
-
+  //this is now the row, not the subtable, it was easier to 
+  //backtrack this way
   Widget subTable(BuildContext context, int number) {
 
     int start = number * 9;

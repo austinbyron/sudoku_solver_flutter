@@ -1,9 +1,17 @@
+import 'dart:core';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:sudoku_solver/game.dart';
 import 'boardui.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+    .then((_) {
+      
+      runApp(MyApp());
+    });
+  
 }
 
 class MyApp extends StatelessWidget {

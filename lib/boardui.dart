@@ -24,9 +24,7 @@ class _Sudoku extends State<Sudoku> {
   
 
   Widget tableElement(BuildContext context, int index) {
-    //TextEditingController number = new TextEditingController();
-    //FocusScope.of(context).requestFocus(FocusNode());
-    //bool _editing = false;
+  
     return Container(
       color: badTile[index] ? Colors.blueAccent : Colors.white,
       child: Padding(
@@ -34,7 +32,7 @@ class _Sudoku extends State<Sudoku> {
         
         child: GestureDetector(
           onTap: () {
-            //FocusScope.of(context).unfocus();
+            
             FocusScope.of(context).requestFocus(nodes[index]);
           },
             child: Column(
@@ -47,19 +45,20 @@ class _Sudoku extends State<Sudoku> {
                     FocusScope.of(context).requestFocus(nodes[index]);
                 },
                 onChanged: (text) {
-                  //nodes[index].requestFocus();
+                  
                   
                 },
 
                 onEditingComplete: () {
                   FocusScope.of(context).unfocus();
-                  //nodes[index].unfocus();
+                  
                 },
                 readOnly: readOnly[index],
                 //maxLength: 1,
                 inputFormatters: <TextInputFormatter>[
                   LengthLimitingTextInputFormatter(1),
-                  BlacklistingTextInputFormatter('0'),
+                  //BlacklistingTextInputFormatter('0'),
+                  FilteringTextInputFormatter.deny('0'),
                   WhitelistingTextInputFormatter.digitsOnly
                 ],
                 focusNode: nodes[index],
@@ -73,7 +72,7 @@ class _Sudoku extends State<Sudoku> {
                   disabledBorder: InputBorder.none,
                 ),
               ),
-              //Text("${index}")
+              
               ]
             ),
             
@@ -139,62 +138,62 @@ class _Sudoku extends State<Sudoku> {
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
           TableRow(
-            //decoration: Decoration.,
+            
             children: [
               subTable(context, 0),
-              //Text("0"),
+              
             ],
           ),
           TableRow(
             children: [
               subTable(context, 1),
-              //Text("1"),
+              
             ]
           ),
           TableRow(
             children: [
               subTable(context, 2),
-              //Text("2"),
+             
             ]
           ),
           TableRow(
             children: [
           
               subTable(context, 3),
-              //Text("3"),
+             
             ]
           ),
           TableRow(
 
             children: [
               subTable(context, 4),
-              //Text("4"),
+              
             ]
           ),
           TableRow(
             children: [
           
               subTable(context, 5),
-              //Text("5"), 
+              
             ]
           ),
           TableRow(
             children: [
               subTable(context, 6),
-              //Text("6"),
+             
             ]
           ),
           TableRow(
 
             children: [
               subTable(context, 7),
-              //Text("7"),
+              
             ]
           ),
           TableRow(
             children: [
               subTable(context, 8),
-              //Text("8"),
+              
             ],
           ),
         ],
@@ -206,7 +205,7 @@ class _Sudoku extends State<Sudoku> {
         width: MediaQuery.of(context).size.width,
         child: Material(
           child: InkWell(
-            splashColor: Colors.lightBlue,
+            splashColor: Colors.yellowAccent,
             child: Center(
               child: Text("Check the board?"),
             ),
@@ -214,10 +213,7 @@ class _Sudoku extends State<Sudoku> {
               resetBadTile();
               int firstUnAssigned = findFirstUnassignedLocation();
               if (firstUnAssigned < 81) {
-                print(firstUnAssigned);
-                print(checkRow(firstUnAssigned));
-                print(checkColumn(firstUnAssigned));
-                print(checkSubTable(firstUnAssigned));
+                
                 await showDialog<void>(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -246,17 +242,17 @@ class _Sudoku extends State<Sudoku> {
                 for (i = 0; i < 81; i++) {
                   if (!checkRow(i)) {
                     stillGood = false;
-                    print(rowMap);
+                    
                     break;
                   }
                   else if (!checkColumn(i)) {
                     stillGood = false;
-                    print(columnMap);
+                    
                     break;
                   }
                   else if (!checkSubTable(i)) {
                     stillGood = false;
-                    print(subTableMap);
+                    
                     break;
                   }
                 }
@@ -273,6 +269,7 @@ class _Sudoku extends State<Sudoku> {
                                     ),
                                     actions: <Widget>[
                                       FlatButton(
+                                        
                                         onPressed: () {
                                           Navigator.popUntil(context, (route) => route.isFirst);
                                         },
@@ -304,7 +301,7 @@ class _Sudoku extends State<Sudoku> {
                                   );
                                 }
                               );
-                print(stillGood ? "done!" : "error at index $i");
+                
               }
             },
           ),
@@ -316,7 +313,7 @@ class _Sudoku extends State<Sudoku> {
         width: MediaQuery.of(context).size.width,
         child: Material(
           child: InkWell(
-            splashColor: Colors.lightBlue,
+            splashColor: Colors.yellowAccent,
             child: Center(
               child: Text("Solve the board?"),
             ),
@@ -326,8 +323,8 @@ class _Sudoku extends State<Sudoku> {
                 _solve = true;
               });
               
-              bool tests = solveBoard();
-              print(tests);
+              solveBoard();
+              
               
               setState(() {
                 _solve = false;
@@ -336,62 +333,7 @@ class _Sudoku extends State<Sudoku> {
           ),
         ),
       ),
-      /*
-      Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: [Flexible(fit: FlexFit.loose, child: Text("Check the board?")),
-          Spacer(),
-          IconButton(
-            icon: _check ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
-            onPressed: () {
-              setState(() {
-                _check = !_check;
-              });
-              
-              resetBadTile();
-              for (int i = 0; i < 9; i++) {
-                if (checkRow(i) != true) {
-                  //badTile[checkRow(i)] = true;
-                }
-                
-                print(checkRow(i));
-                print(checkColumn(i));
-                print(checkSubTable(i));
-              }
-            },
-          ),
-          ]
-        ),
-      ),
-      */
-      /*
-      Padding(
-        padding: EdgeInsets.all(8.0),
-        child: _solve ? CircularProgressIndicator() : Row(
-          children: [Flexible(fit: FlexFit.loose, child: Text("Solve the board?")),
-          Spacer(),
-          IconButton(
-            icon: _solve ? Icon(Icons.check) : Icon(Icons.check_box_outline_blank),
-            onPressed: () {
-              setState(() {
-                _solve = true;
-              });
-              
-              bool tests = solveBoard();
-              print(tests);
-              
-              setState(() {
-                _solve = false;
-              });
-              
-              
-            },
-          ),
-          ]
-        ),
-      )
-      */
+      
           ]
         ),
       )
@@ -404,7 +346,7 @@ class _Sudoku extends State<Sudoku> {
 
 bool solveBoard() {
   int startingSpot = findFirstUnassignedLocation();
-  if (startingSpot == 81) return true; //startingSpot = findFirstWritableAssigned();
+  if (startingSpot == 81) return true; 
   
   for (int i = 1; i <= 9; i++) {
     
@@ -415,10 +357,7 @@ bool solveBoard() {
         checkColumn(startingSpot) &&
         checkSubTable(startingSpot)) {
         
-        //print(checkRow(rowNum));
-        //print(checkColumn(colNum));
-        //print(checkSubTable(boxNum));
-        //print(checkRow(rowNum) && checkColumn(colNum) && checkSubTable(boxNum));
+
 
         if (solveBoard()) {
           return true;
@@ -441,11 +380,7 @@ bool solveBoard() {
 int findFirstUnassignedLocation() {
   for (int i = 0; i < 81; i++) {
     if (controllers[i].text == "" && !readOnly[i]) return i;
-    /*for (int j = 0; j < 9; j++) {
-      if (controllers[(i*9) + j].text == "" && !readOnly[(i*9) + j]) {
-        return (i*9) + j;
-      }
-    }*/
+    
   }
 
   return 81; //out of bounds if everything is filled

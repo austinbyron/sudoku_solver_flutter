@@ -14,7 +14,7 @@ List<bool> readOnly = new List();
     new GameData(difficulty: "Easy", selected: false),
     new GameData(difficulty: "Medium", selected: false),
     new GameData(difficulty: "Hard", selected: false),
-    //new GameData(difficulty: "Expert", selected: false),
+    
     new GameData(difficulty: "Sandbox", selected: false),
 
   ];
@@ -66,7 +66,7 @@ class _GameInitialize extends State<GameInitialize> {
               height: 40,
               child: Material(
                 child: InkWell(
-                  splashColor: Colors.blueAccent,
+                  splashColor: Colors.yellowAccent,
                   onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 0) {
@@ -101,7 +101,7 @@ class _GameInitialize extends State<GameInitialize> {
               height: 40,
               child: Material(
                 child: InkWell(
-                  splashColor: Colors.blueAccent,
+                  splashColor: Colors.yellowAccent,
                   onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 1) {
@@ -135,7 +135,7 @@ class _GameInitialize extends State<GameInitialize> {
               height: 40,
               child: Material(
                 child: InkWell(
-                  splashColor: Colors.blueAccent,
+                  splashColor: Colors.yellowAccent,
                   onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 2) {
@@ -164,50 +164,14 @@ class _GameInitialize extends State<GameInitialize> {
                 ),
               ),
             ),
-            //Spacer(flex: 3),
-            /*
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 40,
-              child: Material(
-                child: InkWell(
-                  splashColor: Colors.blueAccent,
-                  onTap: () {
-                    for (int i = 0; i < gameDataList.length; i++) {
-                      if (i == 3) {
-                        setState(() {
-                          gameDataList[i].selected = !gameDataList[i].selected;
-                        });
-                      }
-                      else {
-                        setState(() {
-                          gameDataList[i].selected = false;
-                        });
-                      }
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10, height: 10),
-                      Expanded(child: Text("Expert")),
-                      Icon(
-                        gameDataList[3].selected ? (Icons.check) : (Icons.check_box_outline_blank),
-                  
-                      ),
-                      SizedBox(height: 10, width: 10),
-                    ],
-                  ),
-                ),
-              ),
-            ),*/
-            //Spacer(flex: 3),
+            
             
             Container(
               width: MediaQuery.of(context).size.width,
               height: 40,
               child: Material(
                 child: InkWell(
-                  splashColor: Colors.blueAccent,
+                  splashColor: Colors.yellowAccent,
                   onTap: () {
                     for (int i = 0; i < gameDataList.length; i++) {
                       if (i == 3) {
@@ -268,32 +232,26 @@ class _GameInitialize extends State<GameInitialize> {
   Future<void> initGame(int index) async {
 
     if (gameDataList[index].difficulty == "Easy") {
-      var rng = new Random();
-      var randomNum = new Random();
-      int random = 0;
-      int filledWith = 0;
-      int count = 0;
+
 
       PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 1);
       Puzzle puzzle = new Puzzle(puzzleOptions);
       puzzle.generate().then((value) {
-        printGrid(puzzle.board());
+        
         List<List<Cell>> myboard = puzzle.board().matrix();
         for (int i = 0; i < 9; i++) {
           for (int j = 0; j < 9; j++) {
-            //print(myboard[i][j].getValue());
+            
             if (myboard[i][j].getValue() != 0) {
               controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
               readOnly[i * 9 + j] = true;
             }
           }
         }
-        printGrid(puzzle.solvedBoard());
+        
       });
       
-      print(puzzle);
       
-      print(count);
     }
 
 
@@ -301,21 +259,19 @@ class _GameInitialize extends State<GameInitialize> {
       PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 2);
       Puzzle puzzle = new Puzzle(puzzleOptions);
       puzzle.generate().then((value) {
-        //printGrid(puzzle.board());
+
         List<List<Cell>> myboard = puzzle.board().matrix();
         for (int i = 0; i < 9; i++) {
           for (int j = 0; j < 9; j++) {
-            //print(myboard[i][j].getValue());
+
             if (myboard[i][j].getValue() != 0) {
               controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
               readOnly[i * 9 + j] = true;
             }
           }
         }
-        //printGrid(puzzle.solvedBoard());
+
       });
-      
-      //print(puzzle);
       
       
     }
@@ -323,49 +279,23 @@ class _GameInitialize extends State<GameInitialize> {
       PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 3);
       Puzzle puzzle = new Puzzle(puzzleOptions);
       puzzle.generate().then((value) {
-        //printGrid(puzzle.board());
+
         List<List<Cell>> myboard = puzzle.board().matrix();
         for (int i = 0; i < 9; i++) {
           for (int j = 0; j < 9; j++) {
-            //print(myboard[i][j].getValue());
+  
             if (myboard[i][j].getValue() != 0) {
               controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
               readOnly[i * 9 + j] = true;
             }
           }
         }
-        //printGrid(puzzle.solvedBoard());
+
       });
       
-      //print(puzzle);
-      
-      
-      //print(count);
+
     }
-    /*
-    else if (gameDataList[index].difficulty == "Expert") {
-      PuzzleOptions puzzleOptions = new PuzzleOptions(difficulty: 4);
-      Puzzle puzzle = new Puzzle(puzzleOptions);
-      puzzle.generate().then((value) {
-        printGrid(puzzle.board());
-        List<List<Cell>> myboard = puzzle.board().matrix();
-        for (int i = 0; i < 9; i++) {
-          for (int j = 0; j < 9; j++) {
-            //print(myboard[i][j].getValue());
-            if (myboard[i][j].getValue() != 0) {
-              controllers[i * 9 + j].text = myboard[i][j].getValue().toString();
-              readOnly[i * 9 + j] = true;
-            }
-          }
-        }
-        printGrid(puzzle.solvedBoard());
-      });
-      
-      print(puzzle);
-      
-      
-      //print(count);
-    }*/
+    
     else {
       for (int i = 0; i < 81; i++) {
         controllers[i].text = "";
